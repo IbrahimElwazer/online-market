@@ -1,17 +1,15 @@
 import React, { useReducer } from 'react';
-import { StyleSheet, Text, View, TextInput,  TouchableWithoutFeedback, Keyboard, Button as NativeButton} from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Keyboard, Button as NativeButton} from 'react-native';
 import { Button } from 'react-native-elements';
 
 
-export default function Signup() {
+export default function Login() {
 
     const [userInput, setUserInput] = useReducer(
         (state, newState) => ({...state}, {...newState}), 
         {
          username: '',
          password:'',
-         firstname: '',
-         lastname:''
         }
     );
 
@@ -20,47 +18,35 @@ export default function Signup() {
       setUserInput({ [key]: val});
    }
 
-   const signUp = () => {
+   const Login = () => {
    }
 
     return (
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss(); }}>
-             <View style={styles.container}>
+            <View style={styles.container}>
                 <View style={styles.header}>
-                        <Text style={styles.title}>Create Your Account</Text>
+                        <Text style={styles.title}>Login</Text>
                 </View>
                 <View style={styles.content}>
-                    <Text style={styles.label}>First Name</Text>
-                    <TextInput 
-                        style={styles.input}
-                        placeholder='Type in your first name'
-                        onChangeText={(val) => handleChange('firstname', val)}
-                    />
-                    <Text style={styles.label}>Last Name</Text>
-                    <TextInput 
-                        style={styles.input}
-                        placeholder='Type in your last name'
-                        onChangeText={(val) => handleChange('lastname', val)}
-                    />
                     <Text style={styles.label}>Username</Text>
                     <TextInput 
                         style={styles.input}
-                        placeholder='Type in your new username'
+                        placeholder='Enter your username'
                         onChangeText={(val) => handleChange('username', val)}
                     />
                     <Text style={styles.label}>Password</Text>
                     <TextInput 
                         style={styles.input}
-                        placeholder='Type in your password'
+                        placeholder='Enter your password'
                         onChangeText={(val) => handleChange('password', val)}
                     />
                     <Button
-                        title='Sign Up'
+                        title='Login'
                         style={styles.button}
-                        onPress={signUp}
+                        onPress={Login}
                     />
                     <NativeButton 
-                        title='I already have an account'
+                        title='create a new account'
                         // onPress={}
                     />
                 </View>
@@ -70,9 +56,11 @@ export default function Signup() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'whitesmoke'
+    button: {
+        width: 330,
+        marginLeft: 24,
+        marginTop: 35,
+        marginBottom: 20 
     },
     content: {
         flex: 1,
@@ -108,11 +96,5 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight:'500',
         marginTop: 20
-    },
-    button: {
-        width: 330,
-        marginLeft: 25,
-        marginTop: 35,
-        marginBottom: 20 
     }
 })
