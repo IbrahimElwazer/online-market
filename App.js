@@ -1,19 +1,37 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Signup from './components/Signup'
+import Signup from './components/Signup';
+import Login from './components/Login'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 
+const Stack = createStackNavigator();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-       <Signup />
-    </View>
+  return (   
+        <NavigationContainer> 
+            <Stack.Navigator>
+                <Stack.Screen 
+                  name="Signup" 
+                  component={Signup} 
+                  options={{ 
+                    title: 'Create your account',
+                    headerStyle: {backgroundColor: '#006dc7'},
+                    headerTintColor: '#fff',
+                    headerStatusBarHeight: 30,
+                    headerTitleStyle: {fontWeight: '500', fontSize: 25, marginBottom: 10},
+                  }}/>
+                <Stack.Screen 
+                  name="Login" 
+                  component={Login} 
+                  options={{ 
+                    title: 'Login',
+                    headerStyle: {backgroundColor: '#006dc7'},
+                    headerTintColor: '#fff',
+                    headerStatusBarHeight: 30,
+                    headerTitleStyle: {fontWeight: '500', fontSize: 25, marginBottom: 10},
+                  }}/>
+            </Stack.Navigator>
+        </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'whitesmoke'
-  },
-});

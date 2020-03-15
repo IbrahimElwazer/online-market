@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput,  TouchableWithoutFeedback, Keyboard,
 import { Button } from 'react-native-elements';
 
 
-export default function Signup() {
+export default function Signup(props) {
 
     const [userInput, setUserInput] = useReducer(
         (state, newState) => ({...state}, {...newState}), 
@@ -26,9 +26,6 @@ export default function Signup() {
     return (
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss(); }}>
              <View style={styles.container}>
-                <View style={styles.header}>
-                        <Text style={styles.title}>Create Your Account</Text>
-                </View>
                 <View style={styles.content}>
                     <Text style={styles.label}>First Name</Text>
                     <TextInput 
@@ -61,7 +58,7 @@ export default function Signup() {
                     />
                     <NativeButton 
                         title='I already have an account'
-                        // onPress={}
+                        onPress={() => props.navigation.navigate('Login')}
                     />
                 </View>
             </View>
@@ -96,12 +93,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         fontSize: 16,
         fontWeight: '400',
-    }, 
-    header: {
-        marginTop: 8,
-        height: 90,
-        paddingTop: 35,
-        backgroundColor: '#1e90ff'
     },
     label: {
         marginLeft: 30,

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Keyboard, 
 import { Button } from 'react-native-elements';
 
 
-export default function Login() {
+export default function Login(props) {
 
     const [userInput, setUserInput] = useReducer(
         (state, newState) => ({...state}, {...newState}), 
@@ -24,9 +24,6 @@ export default function Login() {
     return (
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss(); }}>
             <View style={styles.container}>
-                <View style={styles.header}>
-                        <Text style={styles.title}>Login</Text>
-                </View>
                 <View style={styles.content}>
                     <Text style={styles.label}>Username</Text>
                     <TextInput 
@@ -46,8 +43,8 @@ export default function Login() {
                         onPress={Login}
                     />
                     <NativeButton 
-                        title='create a new account'
-                        // onPress={}
+                        title='Create a new account'
+                        onPress={() => props.navigation.navigate('Signup')}
                     />
                 </View>
             </View>
@@ -56,11 +53,9 @@ export default function Login() {
 }
 
 const styles = StyleSheet.create({
-    button: {
-        width: 330,
-        marginLeft: 24,
-        marginTop: 35,
-        marginBottom: 20 
+    container: {
+        flex: 1,
+        backgroundColor: 'whitesmoke'
     },
     content: {
         flex: 1,
@@ -84,17 +79,17 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         fontSize: 16,
         fontWeight: '400',
-    }, 
-    header: {
-        marginTop: 8,
-        height: 90,
-        paddingTop: 35,
-        backgroundColor: '#1e90ff'
     },
     label: {
         marginLeft: 30,
         fontSize: 20,
         fontWeight:'500',
         marginTop: 20
+    },
+    button: {
+        width: 330,
+        marginLeft: 25,
+        marginTop: 35,
+        marginBottom: 20 
     }
 })
