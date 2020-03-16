@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, FieldList, TouchableWithoutFeedback, Keyboard, Button as NativeButton} from 'react-native';
-import { Button } from 'react-native-elements';
-import { getPosts } from '../functions/Posts';
+import { StyleSheet, Text, View, TextInput, FlatList, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import axios from 'axios';
-import { FlatList } from 'react-native-gesture-handler';
+import Post from './Post';
 
 
-export default class Posts extends Component {
+export default class PostsFeed extends Component {
 
     constructor(props){
         super(props);
@@ -83,22 +81,31 @@ export default class Posts extends Component {
             <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss(); }}>
                 <View style={styles.container}>
                     <View style={styles.content}>
-                         <NativeButton 
-                            title='Login'
-                            onPress={() => this.props.navigation.navigate('Login')}
-                        />
-                        <NativeButton 
-                            title='Sign up'
-                            onPress={() => this.props.navigation.navigate('Signup')}
-                        />
                         <TextInput 
                             style={styles.input}
                             placeholder='Filter posts by country, city, category, date..'
                             onChangeText={(val) => handleChange(val)}
                         />
-                        <FieldList>
+                        <FlatList
+                            data={this.state.posts}
+                            renderItem={({ post }) => (
+                               <Post 
+                                    title={post.title} 
+                                    description={post.description}
+                                    category={post.category}
+                                    country={post.country}
+                                    city={post.city}
+                                    images={post.images}
+                                    price={post.price}
+                                    sellerName={post.sellerName}
+                                    postDate={post.postDate}
+                                    deliveryType={post.deliveryType}
+                                    mobile={post.mobile}
 
-                        </FieldList>
+                               />
+                            )}
+                        />
+
                     </View>
                 </View>
             </TouchableWithoutFeedback>

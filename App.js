@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import Signup from './components/Signup';
 import Login from './components/Login';
-import Posts from './components/Posts';
+import PostsFeed from './components/PostsFeed';
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
@@ -14,7 +14,7 @@ export default function App() {
             <Stack.Navigator>
             <Stack.Screen 
                   name="Posts" 
-                  component={Posts} 
+                  component={PostsFeed} 
                   options={{ 
                     title: 'Posts feed',
                     headerStyle: {backgroundColor: '#006dc7'},
