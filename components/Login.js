@@ -1,25 +1,94 @@
-import React, { useReducer } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Keyboard, Button as NativeButton} from 'react-native';
+import React, { useReducer, useState, Component } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Alert, Keyboard, Button as NativeButton} from 'react-native';
 import { Button } from 'react-native-elements';
+import { login } from '../functions/Users';
 
 
-export default function Login(props) {
+class Login extends Component {
 
-    const [userInput, setUserInput] = useReducer(
-        (state, newState) => ({...state}, {...newState}), 
-        {
-         username: '',
-         password:'',
+    constructor(props){
+        super(props);
+
+        this.state = {
+            username: '',
+            password: ''
         }
-    );
+    }
 
 
-   const handleChange = (key, val) => {
-      setUserInput({ [key]: val});
-   }
+render() {
 
-   const Login = () => {
-   }
+    const handleChange = (key, val) => {
+        this.setState({ [key]: val});
+     }
+  
+    const handleSubmit = () => {
+       
+
+        const userInfo = {
+            username: this.state.username,
+            password: this.state.password
+        }
+
+        login(userInfo).then(res => {
+            if (res){
+                this.props.navigation.navigate('Posts');
+            }
+            if(res === "Incorrect username entered!"){
+                Alert.alert(res, 
+                            'Double check if you have typed in your username correctly', 
+                            [ {text: 'Understood'} ]);
+                }
+            if(res === "Incorrect password entered!"){
+                Alert.alert(res, 
+                    'Double check if you have typed in your  correctly', 
+                    [ {text: 'Understood'} ]);            
+                }
+        })   
+    } 
+
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: 'whitesmoke'
+        },
+        content: {
+            flex: 1,
+            marginTop: 30,
+        },
+        title: {
+            paddingTop: 8,
+            fontWeight: 'bold',
+            color: 'white',
+            fontSize: 30,
+            textAlign: 'center'
+        }, 
+        input: {
+            marginLeft: 30,
+            marginBottom: 5,
+            width: 320,
+            height: 45,
+            padding: 3,
+            borderStyle: 'solid',
+            borderColor: 'black',
+            borderBottomWidth: 1,
+            fontSize: 16,
+            fontWeight: '400',
+        },
+        label: {
+            marginLeft: 30,
+            fontSize: 20,
+            fontWeight:'500',
+            marginTop: 20
+        },
+        button: {
+            width: 330,
+            marginLeft: 25,
+            marginTop: 35,
+            marginBottom: 20 
+        }
+    });
+
 
     return (
         <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss(); }}>
@@ -40,56 +109,18 @@ export default function Login(props) {
                     <Button
                         title='Login'
                         style={styles.button}
-                        onPress={Login}
+                        onPress={handleSubmit}
                     />
                     <NativeButton 
                         title='Create a new account'
-                        onPress={() => props.navigation.navigate('Signup')}
+                        onPress={() => this.props.navigation.navigate('Signup')}
                     />
                 </View>
             </View>
         </TouchableWithoutFeedback>
-    )
+    );
+  }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'whitesmoke'
-    },
-    content: {
-        flex: 1,
-        marginTop: 30,
-    },
-    title: {
-        paddingTop: 8,
-        fontWeight: 'bold',
-        color: 'white',
-        fontSize: 30,
-        textAlign: 'center'
-    }, 
-    input: {
-        marginLeft: 30,
-        marginBottom: 5,
-        width: 320,
-        height: 45,
-        padding: 3,
-        borderStyle: 'solid',
-        borderColor: 'black',
-        borderBottomWidth: 1,
-        fontSize: 16,
-        fontWeight: '400',
-    },
-    label: {
-        marginLeft: 30,
-        fontSize: 20,
-        fontWeight:'500',
-        marginTop: 20
-    },
-    button: {
-        width: 330,
-        marginLeft: 25,
-        marginTop: 35,
-        marginBottom: 20 
-    }
-})
+export default Login;
+
