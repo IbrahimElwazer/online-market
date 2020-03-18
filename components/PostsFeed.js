@@ -11,11 +11,19 @@ export default class PostsFeed extends Component {
         super(props);
 
         this.state = {
-           posts: []
+           posts: [],
+           isLoggedIn: false
         }
     }
 
     componentDidMount(){
+
+        AsyncStorage.getItem('id_token').then(token => {
+            if(token){
+                this.setState({isLoggedIn: true})
+            }
+        });
+
         try {
           return fetch('http://172.20.10.3:4000/posts')
           .then((response) => response.json())
@@ -81,31 +89,47 @@ export default class PostsFeed extends Component {
             })
         }
 
+        const deletePost = (id) => {
+
+            AsyncStorage.getItem('id_token').then(token => {
+
+                return fetch(`http://172.20.10.3:4000/posts/${id}`, {
+                    method: 'delete',
+                    headers: {
+                        'Authentication': 'Bearer' + token
+                      },
+                    body: JSON.stringify(obj)
+                  }).then(response => {
+                     console.log(response)
+                  }).catch(err => {
+                      console.log(err)
+                  });
+            });
+        }
+
 
         const KEYS_TO_FILTERS = ['category', 'postDate', 'city', 'country'];
 
         const filteredPosts = this.state.posts.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS));
 
-        return (
+        const isLoggedIn = this.state.isLoggedIn;
+
+    if(isLoggedIn){
+
+            return (
                 <View style={styles.container}>
                         <SearchInput 
                             style={styles.input}
                             placeholder='Filter posts by country, city, category, date..'
                             onChangeText={(val) => handleChange(val)}
                         />
-                      { /* if user not logged in then show this */ }
-                        <Button
-                            title='Login'
-                            style={styles.button}
-                            onPress={() => this.props.navigation.navigate('Login')}
-                        />
-                        { /* if user is logged in then show this: */ }
+                   
                         <Button
                             title='Logout'
                             style={styles.button}
-                            onPress={}
+                            onPress={this.logout}
                         />
-                         <Button
+                        <Button
                             title='Add Post'
                             style={styles.button}
                             onPress={() => this.props.navigation.navigate('newPost')}
@@ -129,12 +153,56 @@ export default class PostsFeed extends Component {
                                                     deliveryType={post.deliveryType}
                                                     sellerName={post.sellerName}
                                                     mobile={post.mobile}
+                                                    deletePost={() => deletePost(post.id)}
                                                 />   
                                         )
                                     })
                                 }
                         </ScrollView>
                 </View>            
-        )
+            );
+        } else {
+            
+            return (
+                <View style={styles.container}>
+                        <SearchInput 
+                            style={styles.input}
+                            placeholder='Filter posts by country, city, category, date..'
+                            onChangeText={(val) => handleChange(val)}
+                        />
+                   
+                        <Button
+                            title='Login'
+                            style={styles.button}
+                            onPress={() => this.props.navigation.navigate('Login')}
+                        />
+                        <ScrollView>
+                                {
+                                    filteredPosts.map(post => {
+
+                                        return (
+                                                <Post 
+                                                    key={post.id}
+                                                    title={post.title} 
+                                                    description={post.description} 
+                                                    category= {post.category}
+                                                    country={post.country}
+                                                    city={post.city}
+                                                    images={post.images}
+                                                    price={post.price}
+                                                    postDate={post.postDate}
+                                                    deliveryType={post.deliveryType}
+                                                    sellerName={post.sellerName}
+                                                    mobile={post.mobile}
+                                                    
+                                                />   
+                                        )
+                                    })
+                                }
+                        </ScrollView>
+                </View>            
+            );
+        }
+       
     }
 }

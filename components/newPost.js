@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import { StyleSheet, AsyncStorage, Text, View, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { Button } from 'react-native-elements';
 
 
@@ -41,12 +41,13 @@ export default class PostsFeed extends Component {
                sellerName: postInfo.sellerName,
                mobile: postInfo.mobile
             }
-            
+
+        AsyncStorage.getItem('id_token').then(token => {
+
             return fetch('http://172.20.10.3:4000/posts', {
                 method: 'post',
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Authentication': 'Bearer' + token
                   },
                 body: JSON.stringify(obj)
               }).then(response => {
@@ -54,6 +55,9 @@ export default class PostsFeed extends Component {
               }).catch(err => {
                   console.log(err)
               });
+        });
+
+            
         
         }
                 
