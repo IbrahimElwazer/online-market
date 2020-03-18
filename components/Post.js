@@ -5,9 +5,6 @@ import { StyleSheet, Text, View} from 'react-native';
 
 class Post extends Component {
 
-    constructor(props){
-        super(props);
-    }
 
 
 render() {
@@ -15,19 +12,26 @@ render() {
     const styles = StyleSheet.create({
         content: {
             flex: 1,
-            margin: 30,
+            paddingHorizontal: 20,
+            width: 330,
+            marginTop: 24,
+            marginLeft: 22,
+            borderStyle: 'solid',
+            borderColor: 'grey',
+            borderRadius: 40,
+            padding: 20,
+            backgroundColor:'lightblue'
         },
         title: {
-            fontWeight: 'bold',
-            color: 'black',
-            fontSize: 15,
-            margin: 5,
-            textAlign: 'center'
+            fontSize: 16,
+            fontWeight: '500',
+            padding: 3
         }
     });
 
 
     return (
+     
              <View style={styles.content}>
                  <Text style={styles.title}>Title: {this.props.title}</Text>
                  <Text style={styles.title}>Description: {this.props.description}</Text>
@@ -41,6 +45,7 @@ render() {
                  <Text style={styles.title}>Name of Seller: {this.props.sellerName}</Text>
                  <Text style={styles.title}>Mobile Number: {this.props.mobile}</Text>
             </View>
+      
     );
   }
 }

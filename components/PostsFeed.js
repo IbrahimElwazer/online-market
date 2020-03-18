@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, FlatList, TouchableWithoutFeedback, Keyboard} from 'react-native';
-import axios from 'axios';
+import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView} from 'react-native';
 import Post from './Post';
 
 
@@ -14,27 +13,23 @@ export default class PostsFeed extends Component {
         }
     }
 
-        componentDidMount(){
-            return fetch('http://localhost:4000/posts')
-              .then((response) => response.json())
-              .then((data) => {
-
-                this.setState({
-                    posts: [...data]
-                });
-        
-              }).catch((error) =>{
-                console.error(error);
-              });
-
-        // axios.get('http://localhost:4000/posts').then(res => {
-        //     const posts = res.data;
-        //     this.setState({ posts: [...posts] });
-        // }).catch(err => {
-        //     console.log(err)
-        // })
-
-        };
+    componentDidMount(){
+        try {
+          return fetch('http://172.20.10.3:4000/posts')
+          .then((response) => response.json())
+          .then((data) => {
+  
+            this.setState({
+                posts: [...data]
+            });
+  
+              
+          });
+  
+        } catch(error) {
+            console.log(error)
+        }
+      };
 
   
 
@@ -44,17 +39,6 @@ export default class PostsFeed extends Component {
             container: {
                 flex: 1,
                 backgroundColor: 'whitesmoke'
-            },
-            content: {
-                flex: 1,
-                marginTop: 30,
-            },
-            title: {
-                paddingTop: 8,
-                fontWeight: 'bold',
-                color: 'white',
-                fontSize: 30,
-                textAlign: 'center'
             }, 
             input: {
                 marginLeft: 20,
@@ -66,6 +50,7 @@ export default class PostsFeed extends Component {
                 borderColor: 'grey',
                 borderRadius: 40,
                 borderWidth: 1,
+                marginTop: 25,
                 fontSize: 16,
                 fontWeight: '400',
             },
@@ -80,33 +65,34 @@ export default class PostsFeed extends Component {
         return (
             <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss(); }}>
                 <View style={styles.container}>
-                    <View style={styles.content}>
                         <TextInput 
                             style={styles.input}
                             placeholder='Filter posts by country, city, category, date..'
                             onChangeText={(val) => handleChange(val)}
                         />
-                        <FlatList
-                            data={this.state.posts}
-                            renderItem={({ post }) => (
-                               <Post 
-                                    title={post.title} 
-                                    description={post.description}
-                                    category={post.category}
-                                    country={post.country}
-                                    city={post.city}
-                                    images={post.images}
-                                    price={post.price}
-                                    sellerName={post.sellerName}
-                                    postDate={post.postDate}
-                                    deliveryType={post.deliveryType}
-                                    mobile={post.mobile}
+                        <ScrollView>
+                                {
+                                    this.state.posts.map(post => {
 
-                               />
-                            )}
-                        />
-
-                    </View>
+                                        return (
+                                                <Post 
+                                                    key={post.id}
+                                                    title={post.title} 
+                                                    description={post.description} 
+                                                    category= {post.category}
+                                                    country={post.country}
+                                                    city={post.city}
+                                                    images={post.images}
+                                                    price={post.price}
+                                                    postDate={post.postDate}
+                                                    deliveryType={post.deliveryType}
+                                                    sellerName={post.sellerName}
+                                                    mobile={post.mobile}
+                                                />   
+                                        )
+                                    })
+                                }
+                        </ScrollView>
                 </View>
             </TouchableWithoutFeedback>
             

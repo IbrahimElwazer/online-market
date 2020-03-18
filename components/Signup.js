@@ -1,4 +1,4 @@
-import React, { useReducer, useState, Component } from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Alert, Keyboard, Button as NativeButton} from 'react-native';
 import { Button } from 'react-native-elements';
 import { signup } from '../functions/Users';
