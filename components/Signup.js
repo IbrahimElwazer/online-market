@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Alert, Keyboard, Button as NativeButton} from 'react-native';
 import { Button } from 'react-native-elements';
-import { signup } from '../functions/Users';
+
 
 
 class Signup extends Component {
@@ -19,6 +19,24 @@ class Signup extends Component {
 
 
 render() {
+
+    const signup = user => {
+        const obj = {
+            first_name: user.first_name,
+            last_name: user.last_name,
+            username: user.username,
+            password: password.username
+        }
+        return fetch('http://172.20.10.3:4000/register', {
+            method: 'post',
+            body: JSON.stringify(obj)
+          }).then(response => {
+            return response.json();
+          }).catch(err => {
+              console.log(err)
+          });
+    
+    }
 
     const handleChange = (key, val) => {
         this.setState({ [key]: val});
@@ -124,6 +142,7 @@ render() {
                         style={styles.input}
                         placeholder='Type in your password'
                         onChangeText={(val) => handleChange('password', val)}
+                        secureTextEntry={true}
                     />
                     <Button
                         title='Sign Up'

@@ -1,7 +1,7 @@
 import React, { useReducer, useState, Component } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Alert, Keyboard, Button as NativeButton} from 'react-native';
+import { AsyncStorage, StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Alert, Keyboard, Button as NativeButton} from 'react-native';
 import { Button } from 'react-native-elements';
-import { login } from '../functions/Users';
+
 
 
 class Login extends Component {
@@ -15,8 +15,35 @@ class Login extends Component {
         }
     }
 
+    async saveItem(item, selectedValue){
+
+        try{
+            await AsyncStorage.setItem(item, selectedValue)
+        } catch(error){
+            console.log(error)
+        }
+    }
+
 
 render() {
+
+    
+    const login = user => {
+        const obj = {
+            username: user.username,
+            password: password.username
+        }
+        return fetch('http://172.20.10.3:4000/login', {
+            method: 'post',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify(obj)
+          }).then(response => {
+                this.saveItem('id_token', response.token)
+          }).catch(err => {
+              console.log(err)
+          });
+    }
+
 
     const handleChange = (key, val) => {
         this.setState({ [key]: val});
@@ -32,7 +59,7 @@ render() {
 
         login(userInfo).then(res => {
             if (res){
-                this.props.navigation.navigate('Posts');
+                this.props.navigation.navigate('PostsFeed');
             }
             if(res === "Incorrect username entered!"){
                 Alert.alert(res, 
@@ -105,6 +132,7 @@ render() {
                         style={styles.input}
                         placeholder='Enter your password'
                         onChangeText={(val) => handleChange('password', val)}
+                        secureTextEntry={true}
                     />
                     <Button
                         title='Login'

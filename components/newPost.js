@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { Button } from 'react-native-elements';
-import { addPost } from '../functions/Posts';
+
 
 
 export default class PostsFeed extends Component {
@@ -27,6 +27,36 @@ export default class PostsFeed extends Component {
 
     render() {
 
+        const addPost = postInfo => {
+
+            const obj = {
+               title: postInfo.title,
+               description: postInfo.description,
+               category: postInfo.category,
+               country: postInfo.country,
+               city: postInfo.country,
+               images: postInfo.images,
+               price: postInfo.price,
+               deliveryType: postInfo.deliveryType,
+               sellerName: postInfo.sellerName,
+               mobile: postInfo.mobile
+            }
+            
+            return fetch('http://172.20.10.3:4000/posts', {
+                method: 'post',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                body: JSON.stringify(obj)
+              }).then(response => {
+                return response.json();
+              }).catch(err => {
+                  console.log(err)
+              });
+        
+        }
+                
         
         const handleChange = (key, val) => {
             this.setState({ [key]: val});
@@ -47,7 +77,7 @@ export default class PostsFeed extends Component {
                 mobile: this.state.mobile
             }
 
-            addPost(postInfo).then(post => {
+        addPost(postInfo).then(post => {
                 if(post){
                     this.props.navigation.navigate('PostsFeed');
 

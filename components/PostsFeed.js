@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView} from 'react-native';
+import { StyleSheet, AsyncStorage, Text, View, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView} from 'react-native';
 import Post from './Post';
 import SearchInput, { createFilter } from 'react-native-search-filter';
+import { Button } from 'react-native-elements';
 
 
 export default class PostsFeed extends Component {
@@ -32,6 +33,16 @@ export default class PostsFeed extends Component {
             console.log(error)
         }
       };
+
+
+      async logout(){
+          try{
+              await AsyncStorage.removeItem('id_token').then(() => this.props.navigation.navigate('Login'))
+
+          } catch(error){
+              console.log(error)
+          }
+      }
 
   
 
@@ -64,7 +75,7 @@ export default class PostsFeed extends Component {
             }
         });
 
-        handleChange = (val) => {
+        const handleChange = (val) => {
             this.setState({
                 searchTerm: val
             })
@@ -81,6 +92,23 @@ export default class PostsFeed extends Component {
                             style={styles.input}
                             placeholder='Filter posts by country, city, category, date..'
                             onChangeText={(val) => handleChange(val)}
+                        />
+                      { /* if user not logged in then show this */ }
+                        <Button
+                            title='Login'
+                            style={styles.button}
+                            onPress={() => this.props.navigation.navigate('Login')}
+                        />
+                        { /* if user is logged in then show this: */ }
+                        <Button
+                            title='Logout'
+                            style={styles.button}
+                            onPress={}
+                        />
+                         <Button
+                            title='Add Post'
+                            style={styles.button}
+                            onPress={() => this.props.navigation.navigate('newPost')}
                         />
                         
                         <ScrollView>
