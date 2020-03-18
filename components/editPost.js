@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, AsyncStorage, Text, View, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
+import { StyleSheet, Alert, AsyncStorage, Text, View, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { Button } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -28,7 +28,7 @@ export default class PostsFeed extends Component {
 
     render() {
 
-        const addPost = postInfo => {
+        const editPost = (postInfo, id) => {
 
             const obj = {
                title: postInfo.title,
@@ -43,22 +43,24 @@ export default class PostsFeed extends Component {
                mobile: postInfo.mobile
             }
 
-        AsyncStorage.getItem('id_token').then(token => {
 
-            return fetch('http://172.20.10.3:4000/posts', {
-                method: 'post',
-                headers: {
-                    'Authentication': 'Bearer' + token,
-                    'Content-Type': 'multipart/form-data',
-                    'Content-Type': 'application/json'
-                  },
-                body: JSON.stringify(obj)
-              }).then(response => {
-                return response.json();
-              }).catch(err => {
-                  console.log(err)
-              });
-        });
+            AsyncStorage.getItem('id_token').then(token => {
+
+                return fetch(`http://172.20.10.3:4000/posts/${id}`, {
+                    method: 'put',
+                    headers: {
+                        'Authentication': 'Bearer' + token,
+                        'Content-Type': 'application/json',
+                        'Content-Type': 'multipart/form-data'
+                      },
+                    body: JSON.stringify(obj)
+                  }).then(response => {
+                    return response.json();
+                  }).catch(err => {
+                      console.log(err)
+                  });
+            });
+      
 
             
         
@@ -84,12 +86,12 @@ export default class PostsFeed extends Component {
                 mobile: this.state.mobile
             }
 
-        addPost(postInfo).then(post => {
+        editPost(postInfo).then(post => {
                 if(post){
                     this.props.navigation.navigate('PostsFeed');
 
-                    Alert.alert('Post has been uploaded :)', 
-                        'Your post was successfully added to the posts feed', 
+                    Alert.alert('Post has been modified :)', 
+                        'Your post was successfully edited', 
                         [ {text: 'Okay'} ]);
             } else{
                     Alert.alert('Oops! Something went wrong', 
@@ -100,7 +102,7 @@ export default class PostsFeed extends Component {
         }
 
 
-        
+
         const chooseImage = async() => {
             
             let cameraRoll = await ImagePicker.requestCameraRollPermissionsAsync();
@@ -122,7 +124,8 @@ export default class PostsFeed extends Component {
             } else{
                 this.setState({ images: photosUI.uri })
             }
-        
+            
+
 
         }
 
@@ -164,6 +167,9 @@ export default class PostsFeed extends Component {
             }
         });
 
+
+       
+
         return (
             <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss(); }}>
                 <View style={styles.container}>
@@ -171,60 +177,61 @@ export default class PostsFeed extends Component {
                         <Text style={styles.label}>Title of Post</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder='Enter the title of the post'
+                            defaultValue={this.props.title}
                             onChangeText={(val) => handleChange('title', val)}
                         />
                         <Text style={styles.label}>Descirption</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder='Enter a short description of the product'
+                            defaultValue={this.props.description}
                             onChangeText={(val) => handleChange('description', val)}
                         />
                         <Text style={styles.label}>Category</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder='Enter a category for the product'
+                            defaultValue={this.props.category}
                             onChangeText={(val) => handleChange('category', val)}
                         />
                         <Text style={styles.label}>Country</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder='Enter the country which you are in'
+                            defaultValue={this.props.country}
                             onChangeText={(val) => handleChange('country', val)}
                         />
                         <Text style={styles.label}>City</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder='Enter the city which you are in'
+                            defaultValue={this.props.city}
                             onChangeText={(val) => handleChange('city', val)}
                         />
                         <Text style={styles.label}>Images</Text>
                         <Button 
                             style={styles.input}
+                            defaultValue={this.props.images}
                             onPress={chooseImage}
                         />
                         <Text style={styles.label}>Price</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder='Enter the price of the product'
+                            defaultValue={this.props.price}
                             onChangeText={(val) => handleChange('price', val)}
                         />
                         <Text style={styles.label}>Delivery Type</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder='Enter Shipping or Pick up'
+                            defaultValue={this.props.deliveryType}
                             onChangeText={(val) => handleChange('deliveryType', val)}
                         />
                         <Text style={styles.label}>Your Name</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder='Enter your full name'
+                            defaultValue={this.props.sellerName}
                             onChangeText={(val) => handleChange('sellerName', val)}
                         />
                         <Text style={styles.label}>Mobile</Text>
                         <TextInput 
                             style={styles.input}
-                            placeholder='Enter your mobile number'
+                            defaultValue={this.props.sellerName}
                             onChangeText={(val) => handleChange('mobile', val)}
                         />
                         <Button

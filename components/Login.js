@@ -31,14 +31,14 @@ render() {
     const login = user => {
         const obj = {
             username: user.username,
-            password: password.username
+            password: user.password
         }
         return fetch('http://172.20.10.3:4000/login', {
             method: 'post',
             headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
             body: JSON.stringify(obj)
           }).then(response => {
-                this.saveItem('id_token', response.token)
+                this.saveItem('id_token', response.data)
           }).catch(err => {
               console.log(err)
           });

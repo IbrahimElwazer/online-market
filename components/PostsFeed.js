@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, AsyncStorage, Text, View, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView} from 'react-native';
-import Post from './Post';
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import { Button } from 'react-native-elements';
 
@@ -61,6 +60,22 @@ export default class PostsFeed extends Component {
                 flex: 1,
                 backgroundColor: 'whitesmoke'
             }, 
+            content: {
+                paddingHorizontal: 20,
+                width: 330,
+                marginTop: 24,
+                marginLeft: 22,
+                borderStyle: 'solid',
+                borderColor: 'grey',
+                borderRadius: 40,
+                padding: 20,
+                backgroundColor:'lightblue'
+            },
+            title: {
+                fontSize: 16,
+                fontWeight: '500',
+                padding: 3
+            },
             input: {
                 marginLeft: 20,
                 marginBottom: 5,
@@ -80,6 +95,10 @@ export default class PostsFeed extends Component {
                 marginLeft: 25,
                 marginTop: 15,
                 marginBottom: 5 
+            },
+            modifyButton:{
+                width: 280,
+                margin: 10
             }
         });
 
@@ -138,23 +157,45 @@ export default class PostsFeed extends Component {
                         <ScrollView>
                                 {
                                     filteredPosts.map(post => {
-
+                                       
                                         return (
-                                                <Post 
-                                                    key={post.id}
-                                                    title={post.title} 
-                                                    description={post.description} 
-                                                    category= {post.category}
-                                                    country={post.country}
-                                                    city={post.city}
-                                                    images={post.images}
-                                                    price={post.price}
-                                                    postDate={post.postDate}
-                                                    deliveryType={post.deliveryType}
-                                                    sellerName={post.sellerName}
-                                                    mobile={post.mobile}
-                                                    deletePost={() => deletePost(post.id)}
-                                                />   
+                                            <View key={post.ID} style={styles.content}>
+                                                <Text style={styles.title}>Title: {post.title}</Text>
+                                                <Text style={styles.title}>Description: {post.description}</Text>
+                                                <Text style={styles.title}>Category: {post.category}</Text>
+                                                <Text style={styles.title}>Country: {post.country}</Text>
+                                                <Text style={styles.title}>City: {post.city}</Text>
+                                                {/* <Image style={{width:30, height: 30}} source={{uri: post.images}}></Image> */}
+                                                <Text style={styles.title}>Price: {post.price}</Text>
+                                                <Text style={styles.title}>Date of Post: {post.postDate}</Text>
+                                                <Text style={styles.title}>Delivery Type: {post.deliveryType}</Text>
+                                                <Text style={styles.title}>Name of Seller: {post.sellerName}</Text>
+                                                <Text style={styles.title}>Mobile Number: {post.mobile}</Text>
+                                                <Button
+                                                    title='Modify'
+                                                    style={styles.modifyButton}
+                                                    onPress={() => this.props.navigation.navigate('editPost', 
+                                                    {
+                                                        ID: post.ID,
+                                                        title: post.title,
+                                                        description: post.description,
+                                                        category: post.category,
+                                                        country: post.country,
+                                                        city: post.city,
+                                                        images: post.images,
+                                                        price: post.price,
+                                                        deliveryType: post.deliveryType,
+                                                        sellerName: post.sellerName,
+                                                        mobile: post.mobile
+                                                    })}
+                                                />
+                                                 <Button
+                                                    title='Delete'
+                                                    style={styles.button}
+                                                    onPress={() => deletePost(post.ID)}
+                                                />
+                                            
+                                            </View>
                                         )
                                     })
                                 }
@@ -181,21 +222,21 @@ export default class PostsFeed extends Component {
                                     filteredPosts.map(post => {
 
                                         return (
-                                                <Post 
-                                                    key={post.id}
-                                                    title={post.title} 
-                                                    description={post.description} 
-                                                    category= {post.category}
-                                                    country={post.country}
-                                                    city={post.city}
-                                                    images={post.images}
-                                                    price={post.price}
-                                                    postDate={post.postDate}
-                                                    deliveryType={post.deliveryType}
-                                                    sellerName={post.sellerName}
-                                                    mobile={post.mobile}
-                                                    
-                                                />   
+                                            <View key={post.ID} style={styles.content}>
+                                                <Text style={styles.title}>Title: {post.title}</Text>
+                                                <Text style={styles.title}>Description: {post.description}</Text>
+                                                <Text style={styles.title}>Category: {post.category}</Text>
+                                                <Text style={styles.title}>Country: {post.country}</Text>
+                                                <Text style={styles.title}>City: {post.city}</Text>
+                                                {/* <Image style={{width:30, height: 30}} source={{uri: post.images}}></Image> */}
+                                                <Text style={styles.title}>Price: {post.price}</Text>
+                                                <Text style={styles.title}>Date of Post: {post.postDate}</Text>
+                                                <Text style={styles.title}>Delivery Type: {post.deliveryType}</Text>
+                                                <Text style={styles.title}>Name of Seller: {post.sellerName}</Text>
+                                                <Text style={styles.title}>Mobile Number: {post.mobile}</Text>
+                                               
+                                            </View>
+                                 
                                         )
                                     })
                                 }
