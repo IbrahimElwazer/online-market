@@ -3,7 +3,7 @@ export const login = user => {
         username: user.username,
         password: password.username
     }
-    return fetch('http://localhost:4000/login', {
+    return fetch('http://172.20.10.3:4000/login', {
         method: 'post',
         body: JSON.stringify(obj)
       }).then(response => {
@@ -21,7 +21,7 @@ export const signup = user => {
         username: user.username,
         password: password.username
     }
-    return fetch('http://localhost:4000/register', {
+    return fetch('http://172.20.10.3:4000/register', {
         method: 'post',
         body: JSON.stringify(obj)
       }).then(response => {

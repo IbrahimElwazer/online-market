@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView} from 'react-native';
 import Post from './Post';
+import SearchInput, { createFilter } from 'react-native-search-filter';
 
 
 export default class PostsFeed extends Component {
@@ -20,7 +21,8 @@ export default class PostsFeed extends Component {
           .then((data) => {
   
             this.setState({
-                posts: [...data]
+                posts: [...data],
+                searchTerm: ''
             });
   
               
@@ -62,17 +64,28 @@ export default class PostsFeed extends Component {
             }
         });
 
+        handleChange = (val) => {
+            this.setState({
+                searchTerm: val
+            })
+        }
+
+
+        const KEYS_TO_FILTERS = ['category', 'postDate', 'city', 'country'];
+
+        const filteredPosts = this.state.posts.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS));
+
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss(); }}>
                 <View style={styles.container}>
-                        <TextInput 
+                        <SearchInput 
                             style={styles.input}
                             placeholder='Filter posts by country, city, category, date..'
                             onChangeText={(val) => handleChange(val)}
                         />
+                        
                         <ScrollView>
                                 {
-                                    this.state.posts.map(post => {
+                                    filteredPosts.map(post => {
 
                                         return (
                                                 <Post 
@@ -93,9 +106,7 @@ export default class PostsFeed extends Component {
                                     })
                                 }
                         </ScrollView>
-                </View>
-            </TouchableWithoutFeedback>
-            
+                </View>            
         )
     }
 }

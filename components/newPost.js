@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import { Button } from 'react-native-elements';
-import axios from 'axios';
-import Post from './Post';
+import { addPost } from '../functions/Posts';
 
 
 export default class PostsFeed extends Component {

@@ -3,8 +3,9 @@ import React from 'react';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import PostsFeed from './components/PostsFeed';
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import newPost from './components/newPost';
 
 const Stack = createStackNavigator();
 
@@ -12,7 +13,7 @@ export default function App() {
   return (   
         <NavigationContainer> 
             <Stack.Navigator>
-            <Stack.Screen 
+                <Stack.Screen 
                   name="Posts" 
                   component={PostsFeed} 
                   options={{ 
@@ -20,7 +21,7 @@ export default function App() {
                     headerStyle: {backgroundColor: '#006dc7'},
                     headerTintColor: '#fff',
                     headerStatusBarHeight: 50,
-                    headerTitleStyle: {fontWeight: '500', fontSize: 25, marginBottom: 10},
+                    headerTitleStyle: {fontWeight: '500', fontSize: 25, marginBottom: 10}
                   }}/>
                 <Stack.Screen 
                   name="Signup" 
@@ -30,7 +31,7 @@ export default function App() {
                     headerStyle: {backgroundColor: '#006dc7'},
                     headerTintColor: '#fff',
                     headerStatusBarHeight: 50,
-                    headerTitleStyle: {fontWeight: '500', fontSize: 25, marginBottom: 10},
+                    headerTitleStyle: {fontWeight: '500', fontSize: 25, marginBottom: 10}
                   }}/>
                 <Stack.Screen 
                   name="Login" 
@@ -40,7 +41,17 @@ export default function App() {
                     headerStyle: {backgroundColor: '#006dc7'},
                     headerTintColor: '#fff',
                     headerStatusBarHeight: 50,
-                    headerTitleStyle: {fontWeight: '500', fontSize: 25, marginBottom: 10},
+                    headerTitleStyle: {fontWeight: '500', fontSize: 25, marginBottom: 10}
+                  }}/>
+                <Stack.Screen 
+                  name="newPost" 
+                  component={newPost} 
+                  options={{ 
+                    title: 'Create a new post',
+                    headerStyle: {backgroundColor: '#006dc7'},
+                    headerTintColor: '#fff',
+                    headerStatusBarHeight: 50,
+                    headerTitleStyle: {fontWeight: '500', fontSize: 25, marginBottom: 10}
                   }}/>
             </Stack.Navigator>
         </NavigationContainer>

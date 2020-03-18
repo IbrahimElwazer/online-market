@@ -11,7 +11,6 @@ render() {
 
     const styles = StyleSheet.create({
         content: {
-            flex: 1,
             paddingHorizontal: 20,
             width: 330,
             marginTop: 24,

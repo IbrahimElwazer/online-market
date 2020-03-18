@@ -1,8 +1,18 @@
-export const posts = user => {
+export const addPost = postInfo => {
     const obj = {
-       
+       title: postInfo.title,
+       description: postInfo.description,
+       category: postInfo.category,
+       country: postInfo.country,
+       city: postInfo.country,
+       images: postInfo.images,
+       price: postInfo.price,
+       deliveryType: postInfo.deliveryType,
+       sellerName: postInfo.sellerName,
+       mobile: postInfo.mobile
+
     }
-    return fetch('http://localhost:4000/posts', {
+    return fetch('http://172.20.10.3:4000/posts', {
         method: 'post',
         headers: {
             'Accept': 'application/json',
@@ -17,14 +27,4 @@ export const posts = user => {
 
 }
 
-// export const getPosts = () => {
-
-//     return axios.get('/posts', {
-//         headers: { 'Content-Type': 'application/json' }
-//     }).then(res => {
-//         return res.data
-//     }).catch(err => {
-//         console.log("It failed heeeerrreee!!!" + err);
-//     })
-// }
 
